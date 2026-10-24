@@ -13,7 +13,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS CDN for 100% Standalone Single-File execution -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -24,6 +24,7 @@
             fontFamily: {
               sans: ['"Plus Jakarta Sans"', 'sans-serif'],
               mono: ['"JetBrains Mono"', 'monospace'],
+              cinzel: ['"Cinzel"', 'serif'],
             },
             colors: {
               amber: {
@@ -37,12 +38,37 @@
       }
     </script>
     <style>
+      :root{--bg-obsidian:#070709;--bg-elevated:#0f1014;--gold-primary:#dfba73;--gold-light:#fbe6b3;--gold-mid:#c59b4b}
       body {
         font-family: 'Plus Jakarta Sans', sans-serif;
       }
       .font-mono {
         font-family: 'JetBrains Mono', monospace;
       }
+      /* FLASHSCREEN STYLES */
+      #xtrade-flash{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;background:#000;z-index:99999;display:flex;justify-content:center;align-items:center;transition:opacity 0.8s ease;cursor:pointer;}
+      .mobile-frame{position:relative;width:100%;height:100vh;height:100dvh;max-width:430px;background:radial-gradient(circle at 50% 45%, var(--bg-elevated) 0%, var(--bg-obsidian) 75%);display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:60px 28px 45px 28px;overflow:hidden}
+      .mobile-frame::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);width:320px;height:320px;background:radial-gradient(circle, rgba(223,186,115,0.12) 0%, transparent 70%);filter:blur(25px);animation:pulseGlow 6s ease-in-out infinite alternate}
+      #particleCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+      .top-bar{z-index:5;display:flex;justify-content:center;width:100%;animation:fadeIn 1.2s 0.3s forwards;opacity:0}
+      .pill-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:999px;background:rgba(255,255,255,0.03);border:1px solid rgba(223,186,115,0.18);font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold-light)}
+      .pill-dot{width:5px;height:5px;border-radius:50%;background:var(--gold-primary);box-shadow:0 0 8px var(--gold-primary)}
+      .center-content{z-index:5;display:flex;flex-direction:column;align-items:center;margin-top:-30px}
+      .emblem-wrapper{position:relative;width:150px;height:150px;display:flex;align-items:center;justify-content:center;animation:emblemReveal 1.5s 0.5s forwards;opacity:0;transform:scale(0.85)}
+      .rim-light-ring{position:absolute;inset:-4px;border-radius:50%;background:conic-gradient(from 180deg, rgba(223,186,115,0.02) 0deg, rgba(223,186,115,0.35) 90deg, rgba(223,186,115,0.02) 180deg, rgba(223,186,115,0.45) 270deg, rgba(223,186,115,0.02) 360deg);filter:blur(6px);animation:slowSpin 25s linear infinite}
+      .gold-svg-emblem{width:120px;height:120px;filter:drop-shadow(0 15px 25px rgba(0,0,0,0.8)) drop-shadow(0 0 20px rgba(223,186,115,0.25))}
+      .brand-title{font-family:'Cinzel',serif;font-size:1.85rem;font-weight:600;letter-spacing:0.32em;margin-top:36px;text-indent:0.32em;background:linear-gradient(135deg,#ffffff 0%, var(--gold-light) 40%, var(--gold-primary) 70%, var(--gold-mid) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:fadeIn 1.2s 0.8s forwards;opacity:0}
+      .brand-tagline{font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:#8e8a82;margin-top:10px;font-weight:300;text-indent:0.3em;animation:fadeIn 1.2s 1s forwards;opacity:0}
+      .footer-bar{z-index:5;display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;animation:fadeIn 1.2s 1.2s forwards;opacity:0}
+      .loader-line{position:relative;width:70px;height:1.5px;background:rgba(223,186,115,0.12);overflow:hidden}
+      .loader-fill{position:absolute;top:0;left:0;height:100%;width:40%;background:linear-gradient(90deg,transparent,var(--gold-primary),transparent);animation:slideSweep 2.2s ease-in-out infinite}
+      .security-notice{display:flex;align-items:center;gap:6px;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:#4f4c46}
+      @keyframes fadeIn{to{opacity:1;transform:translateY(0)}} 
+      @keyframes emblemReveal{to{opacity:1;transform:scale(1)}} 
+      @keyframes pulseGlow{0%{transform:translate(-50%,-55%) scale(0.95);opacity:0.7}100%{transform:translate(-50%,-55%) scale(1.1);opacity:1}} 
+      @keyframes slowSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} 
+      @keyframes slideSweep{0%{left:-40%}100%{left:100%}}
+      #main-app{opacity:0;transition:opacity 0.8s ease;min-height:100vh;width:100%}
       /* Custom subtle scrollbar */
       ::-webkit-scrollbar {
         width: 8px;
@@ -60,7 +86,42 @@
       }
     </style>
   </head>
-  <body class="bg-neutral-950 text-neutral-100 font-sans antialiased selection:bg-amber-400 selection:text-neutral-950 pb-20">
+  <body class="bg-neutral-950 text-neutral-100 font-sans antialiased selection:bg-amber-400 selection:text-neutral-950">
+
+    <!-- FLASHSCREEN INTRO -->
+    <div id="xtrade-flash" onclick="dismissFlash()">
+      <main class="mobile-frame">
+        <canvas id="particleCanvas"></canvas>
+        <header class="top-bar">
+          <div class="pill-badge"><span class="pill-dot"></span><span>Private Wealth</span></div>
+        </header>
+        <section class="center-content">
+          <div class="emblem-wrapper">
+            <div class="rim-light-ring"></div>
+            <svg class="gold-svg-emblem" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="goldRim" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fff0cc"/><stop offset="25%" stop-color="#e8c67e"/><stop offset="50%" stop-color="#8c6225"/><stop offset="75%" stop-color="#fbe6b3"/><stop offset="100%" stop-color="#7a581e"/></linearGradient>
+                <linearGradient id="goldCore" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fcedc7"/><stop offset="35%" stop-color="#d4af37"/><stop offset="70%" stop-color="#936d2c"/><stop offset="100%" stop-color="#eac884"/></linearGradient>
+              </defs>
+              <polygon points="100,16 168,54 168,146 100,184 32,146 32,54" stroke="url(#goldRim)" stroke-width="2.5" fill="none" opacity="0.85"/>
+              <path d="M100 36 L150 65 V135 L100 164 L50 135 V65 Z" stroke="url(#goldCore)" stroke-width="7" stroke-linejoin="round" fill="rgba(10,10,12,0.75)"/>
+              <path d="M100 56 L130 100 L100 144 L70 100 Z" fill="url(#goldRim)"/>
+              <circle cx="100" cy="100" r="7" fill="#ffffff" opacity="0.95"/>
+            </svg>
+          </div>
+          <h1 class="brand-title">XTRADE STORE</h1>
+          <p class="brand-tagline">THANKS FOR WATCHING</p>
+        </section>
+        <footer class="footer-bar">
+          <div class="loader-line"><div class="loader-fill"></div></div>
+          <div class="security-notice">🔒 End-to-End Encrypted Node</div>
+          <div style="font-size: 0.6rem; color: #71717a; margin-top: 4px; letter-spacing: 0.1em; cursor: pointer;">[Klik untuk lewati / skip]</div>
+        </footer>
+      </main>
+    </div>
+
+    <!-- MAIN APP CONTAINER (Fades in after flashscreen) -->
+    <div id="main-app" class="pb-20">
 
     <!-- TOP BAR NAVIGATION (3-Zone Contract) -->
     <header class="sticky top-0 z-40 bg-neutral-950/90 backdrop-blur-md border-b border-neutral-800">
@@ -501,9 +562,87 @@
         </div>
       </div>
     </div>
+    <!-- END #main-app -->
 
     <!-- JAVASCRIPT LOGIC & 27 PRODUCTS DATA -->
     <script>
+      // FLASHSCREEN PARTICLE CANVAS & TIMEOUT LOGIC
+      (function(){
+        const canvas=document.getElementById('particleCanvas');
+        if(!canvas)return;
+        const ctx=canvas.getContext('2d');
+        let particles=[];
+        function resize(){
+          const r=canvas.parentElement.getBoundingClientRect();
+          canvas.width=r.width;
+          canvas.height=r.height;
+        }
+        window.addEventListener('resize',resize);
+        resize();
+        class Particle{
+          constructor(){this.reset(true)}
+          reset(i=false){
+            this.x=Math.random()*canvas.width;
+            this.y=i?Math.random()*canvas.height:canvas.height+10;
+            this.size=Math.random()*1.6+0.5;
+            this.speedY=Math.random()*0.45+0.15;
+            this.speedX=(Math.random()-0.5)*0.25;
+            this.maxOpacity=Math.random()*0.5+0.2;
+            this.opacity=0;
+            this.fadeSpeed=Math.random()*0.008+0.004;
+            this.fadingIn=true;
+          }
+          update(){
+            this.y-=this.speedY;
+            this.x+=this.speedX;
+            if(this.fadingIn){
+              this.opacity+=this.fadeSpeed;
+              if(this.opacity>=this.maxOpacity)this.fadingIn=false;
+            }else{
+              this.opacity-=this.fadeSpeed;
+              if(this.opacity<=0)this.reset();
+            }
+            if(this.y<-10)this.reset();
+          }
+          draw(){
+            ctx.beginPath();
+            ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+            ctx.fillStyle=`rgba(223,186,115,${this.opacity})`;
+            ctx.shadowBlur=8;
+            ctx.shadowColor='rgba(251,230,179,0.6)';
+            ctx.fill();
+          }
+        }
+        for(let i=0;i<42;i++)particles.push(new Particle());
+        function animate(){
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+          for(let p of particles){p.update();p.draw();}
+          requestAnimationFrame(animate);
+        }
+        animate();
+      })();
+
+      let flashDismissed = false;
+      function dismissFlash() {
+        if (flashDismissed) return;
+        flashDismissed = true;
+        const flash = document.getElementById('xtrade-flash');
+        const app = document.getElementById('main-app');
+        if (flash) {
+          flash.style.opacity = '0';
+          setTimeout(() => {
+            flash.style.display = 'none';
+            if (app) {
+              app.style.opacity = '1';
+              window.scrollTo(0, 0);
+            }
+          }, 800);
+        }
+      }
+
+      // Automatically transition after 3.5 seconds
+      setTimeout(dismissFlash, 3500);
+
       const PRODUCTS = [
         {
           id: 1,
